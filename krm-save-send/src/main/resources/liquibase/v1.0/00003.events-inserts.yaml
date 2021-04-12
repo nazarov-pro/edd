@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: shahin
+      changes:
+        - insert:
+            tableName: t_event_types
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: created_at
+                  valueDate: ${now}
+              - column:
+                  name: updated_at
+                  valueDate: ${now}
+
+        - insert:
+            tableName: t_event_type_topics
+            columns:
+              - column:
+                  name: event_type_id
+                  value: 1
+              - column:
+                  name: topic
+                  value: edd.email-msg

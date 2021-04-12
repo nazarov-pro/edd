@@ -1,0 +1,118 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: shahin
+      changes:
+        - createTable:
+            tableName: t_event_types
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: t_event_type_topics
+            columns:
+              - column:
+                  name: event_type_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: event_type_topics_id
+              - column:
+                  name: topic
+                  type: varchar(63)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: event_type_topics_id
+
+        - createTable:
+            tableName: t_events_data
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: event_data
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: t_event_batches
+            columns:
+              - column:
+                  name: event_data_id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: event_batch_id
+              - column:
+                  name: event_type_id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: event_batch_id
+              - column:
+                  name: locking_expiration_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: locked_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: t_event_batches
+        - dropTable:
+            cascadeConstraints: true
+            tableName: t_events_data
+        - dropTable:
+            cascadeConstraints: true
+            tableName: t_event_type_topics
+        - dropTable:
+            cascadeConstraints: true
+            tableName: t_event_types

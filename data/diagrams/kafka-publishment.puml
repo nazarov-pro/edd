@@ -1,0 +1,85 @@
+@startuml
+skinparam Shadowing false
+
+actor "Client" as client
+participant "Service Layer" as svc
+database "Database" as db
+queue "Kafka" as kafka
+
+group Approach v1
+client ->> svc: 1.0. Send Message
+svc ->> db: 1.1. Save message to the database
+svc ->> kafka: 1.2. Produce message to the kafka
+end
+
+group Approach v2
+client ->> svc: 2.0. Send Message
+svc ->> db: 2.1. Save the message to\n the database
+svc ->> kafka: 2.2. Produce message to the kafka
+group if sending to kafka failed
+svc ->> db: 2.3. Save db as failed events \nfor retry or monitoring
+end
+end
+
+group Approach v3
+client ->> svc: 3.0. Send Message
+
+group one transaction
+svc ->> db: 3.1. Save the message to\n the database
+svc ->> db: 3.2. Save the message to\n the database (as event)
+end
+
+group Publisher App (Can be Kafka Connect or custom app \nwhich fetching events with interval)
+svc ->> db: 3.3. Fetching from events table \n regularly
+svc ->> kafka: 3.4. Sending fetched events to the kafka
+svc ->> db: 3.5. Update events as sent
+end
+
+end
+
+group Approach v4
+client ->> svc: 4.0. Send Message
+
+group one transaction
+svc ->> db: 4.1. Save the message to\n the database
+svc ->> db: 4.2. Save the message to\n the database (as event)
+end
+
+
+group Debezium Connect (Streaming database changes)
+svc ->> db: 4.3. Listening db's stream api
+note top
+Streaming is an additional
+plugin or a feature that
+must be enabled or installed
+depends on the database.
+end note
+
+svc ->> kafka: 4.4. Sending events to the kafka
+end
+
+end
+
+group Approach v5
+client ->> svc: 5.0. Send Message
+
+group one transaction
+svc ->> db: 5.1. Save the message to\n the database
+svc ->> db: 5.2. Save the message to\n the database \n(as event with lock guarantee time, \nlocked by, status columns included)
+end
+
+group Kafka send event (async)
+svc ->> kafka: 5.3. Sending the event to the kafka
+svc --> db: 5.4. Save the event as SENT status (as success listener)
+end
+
+
+group Kafka send unpublished events (batch single instance)
+svc ->> db: 5.0. Fetch not published(by status) or locking expired events
+svc ->> kafka: 5.1. Sending the event to the kafka
+svc --> db: 5.2. Save the event as SENT status (as success listener)
+end
+
+end
+
+@enduml

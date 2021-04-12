@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${APP_DB_URL}
+  main:
+    banner-mode: off
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+app:
+  kafka:
+    bootstrap-servers: ${APP_KAFKA_BOOTSTRAP_SERVERS}

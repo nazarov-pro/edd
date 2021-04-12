@@ -1,0 +1,20 @@
+version: "3"
+services:
+  edd-db:
+    container_name: edd-db
+    image: postgres:12
+    command: [ "postgres", "-c", "wal_level=logical"]
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: edd
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: edd
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    name: edd-backend-net
+    external: true
+

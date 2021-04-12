@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  edd-krm-kss:
+    container_name: edd-krm-kss
+    image: edd-krm-kss:test
+    ports:
+      - 8080:8080
+    depends_on:
+      - edd-kafka
+      - edd-db
+    networks:
+      - backend-network
+    links:
+      - edd-db:db
+      - edd-kafka:kafka
+
+networks:
+  backend-network:
+    name: edd-backend-net
+    external: true

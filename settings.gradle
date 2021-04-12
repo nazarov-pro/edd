@@ -1,0 +1,7 @@
+rootProject.name = 'edd'
+include 'krm-debezium'
+include 'kafka-error-handling'
+include 'common'
+include 'krm-transactional'
+include 'krm-save-send'
+

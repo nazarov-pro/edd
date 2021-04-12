@@ -1,0 +1,66 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: shahin
+      changes:
+        - tagDatabase:
+            tag: version_1.0
+
+  - changeSet:
+      id: 2
+      author: shahin
+      changes:
+        - createSequence:
+            dataType: bigint
+            incrementBy: 1
+            maxValue: 999999999999
+            minValue: 1
+            sequenceName: t_email_message_id_seq
+            startValue: 1
+
+        - createTable:
+            tableName: t_email_messages
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: event_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: recipients
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - addUniqueConstraint:
+            columnNames: event_id
+            constraintName: t_email_messages_event_id_idx
+            tableName: t_email_messages
+            validate: true
+
+      rollback:
+        - dropSequence:
+            sequenceName: t_email_message_id_seq
+
+        - dropTable:
+            cascadeConstraints: true
+            tableName: t_email_messages

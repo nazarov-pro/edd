@@ -1,0 +1,29 @@
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = '11'
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        implementation 'org.projectlombok:lombok:1.18.18'
+        annotationProcessor 'org.projectlombok:lombok:1.18.18'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+allprojects {
+    group = 'com.shahinnazarov.edd'
+    version = '0.0.1-SNAPSHOT'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}

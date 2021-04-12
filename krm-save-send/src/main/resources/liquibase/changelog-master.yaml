@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: postgresql
+  - include:
+      file: v1.0/00001.email-messages-ddl.yaml
+  - include:
+      file: v1.0/00002.events-ddl.yaml
+  - include:
+      file: v1.0/00003.events-inserts.yaml

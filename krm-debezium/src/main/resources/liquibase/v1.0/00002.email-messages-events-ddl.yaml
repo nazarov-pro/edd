@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: shahin
+      changes:
+        - createTable:
+            tableName: t_email_message_events
+            columns:
+              - column:
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: event_data
+                  type: JSONB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: topic_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_sent
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: t_email_message_events

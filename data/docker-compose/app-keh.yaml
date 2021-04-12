@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  edd-keh:
+    container_name: edd-keh
+    image: edd-keh:test
+    depends_on:
+      - edd-kafka
+      - edd-db
+    networks:
+      - backend-network
+    links:
+      - edd-db:db
+      - edd-kafka:kafka
+
+networks:
+  backend-network:
+    name: edd-backend-net
+    external: true
