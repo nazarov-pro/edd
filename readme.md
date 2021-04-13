@@ -28,11 +28,16 @@ through the kafka. Debezium will automatically get that change and publish them 
 You can use the following commands below for testing (debezium/kafka/portgres) combination.
 
 ```shell
-$ make set-up
-$ make krm-up
-$ make krm-add-connector-request
-$ make krm-send-email-request
-$ make krm-down
+#sets up docker network
+make set-up
+#building app, making db migrations, starting apps and attaching logs
+make krm-up
+#sends request to debezium to connect database and stream data
+make krm-add-connector-request
+#it sends a request and save event database
+make krm-send-email-request
+#for stopping all apps gracefully
+make krm-down
 ```
 
 ## Approach v5 ##
