@@ -1,6 +1,7 @@
 package com.shahinnazarov.edd.krm.resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.shahinnazarov.edd.common.utils.constants.KafkaConstants;
 import com.shahinnazarov.edd.krm.container.dto.SendEmailDto;
 import com.shahinnazarov.edd.krm.services.producers.SendEmailProducer;
 import java.util.concurrent.ExecutionException;
@@ -18,7 +19,7 @@ public class SendEmailResource {
     @PostMapping("/send-email")
     public ResponseEntity<Void> send(@RequestBody SendEmailDto sendEmailDto)
             throws InterruptedException, ExecutionException, JsonProcessingException {
-        sendEmailProducer.send(sendEmailDto);
+        sendEmailProducer.send(KafkaConstants.TOPIC_SEND_EMAIL, sendEmailDto);
         return ResponseEntity.ok().build();
     }
 }
